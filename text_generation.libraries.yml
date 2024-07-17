@@ -1,0 +1,7 @@
+text_generation_plugin:
+  js:
+    js/build/text2text_generation.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/drupalSettings

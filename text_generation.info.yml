@@ -1,0 +1,7 @@
+name: 'Text Generation'
+type: module
+description: 'Provides a CKEditor 5 plugin for text generation using TransformersPHP.'
+core_version_requirement: ^10
+package: Custom
+dependencies:
+  - drupal:ckeditor5
