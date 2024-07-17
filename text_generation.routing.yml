@@ -5,4 +5,4 @@ text_generation.generate_text:
     _title: 'Generate Text'
   requirements:
     _permission: 'access content'
-  methods: [POST]
+  methods: [GET, POST]
