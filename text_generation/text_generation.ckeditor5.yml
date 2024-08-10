@@ -1,10 +1,13 @@
-text_generation_demo_text2text_generation:
+text_generation_text2text:
   ckeditor5:
     plugins:
-      - TextToTextGeneration
+      - text2text_generation.TextToTextGeneration
+
   drupal:
     label: Text to Text Generation
+    
     library: text_generation/text_generation_plugin
+   
     toolbar_items:
       textToTextGeneration:
         label: Text to Text Generation
