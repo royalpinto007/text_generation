@@ -29,14 +29,7 @@ getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
       ],
       moduleIds: 'named',
     },
-    entry: {
-      path: path.resolve(
-        __dirname,
-        'js/ckeditor5_plugins',
-        dir,
-        'src/index.js',
-      ),
-    },
+    entry: path.resolve(__dirname, 'js/ckeditor5_plugins', dir, 'src/index.js'),
     output: {
       path: path.resolve(__dirname, './js/build'),
       filename: `${dir}.js`,

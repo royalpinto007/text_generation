@@ -1,7 +1,9 @@
 text_generation_plugin:
   js:
-    js/build/text2text_generation.js: {}
+    js/build/text2text_generation.js: { preprocess: false, minified: true }
   dependencies:
     - core/drupal
     - core/jquery
     - core/drupalSettings
+    - core/ckeditor5
+    
