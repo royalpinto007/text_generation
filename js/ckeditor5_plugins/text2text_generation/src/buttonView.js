@@ -12,32 +12,36 @@ export default function createButtonView(locale, editor) {
     });
 
     view.on('execute', () => {
-        // Create a dialog element
         const dialogElement = document.createElement('div');
-        dialogElement.style.position = 'absolute';
+        dialogElement.style.position = 'fixed'; 
         dialogElement.innerHTML = `
-            <div style="padding: 20px; background-color: white; border: 1px solid black; position: relative;">
-                <textarea id="inputText" rows="4" cols="50" style="margin-bottom: 10px;"></textarea>
+            <div style="padding: 20px; background-color: white; border: 1px solid black; position: relative; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
+                <textarea id="inputText" rows="4" cols="20" style="margin-bottom: 10px;"></textarea><br>
                 <button id="submitText">Generate</button>
             </div>
         `;
 
-        // Append dialog to body and position it
         document.body.appendChild(dialogElement);
-        const buttonRect = view.element.getBoundingClientRect();
-        dialogElement.style.top = `${buttonRect.bottom + window.scrollY}px`;
-        dialogElement.style.left = `${buttonRect.left + window.scrollX}px`;
+        positionDialog(dialogElement, view.element);
 
-        // Focus the textarea
+        window.addEventListener('resize', () => positionDialog(dialogElement, view.element));
+        window.addEventListener('scroll', () => positionDialog(dialogElement, view.element));
+
         document.getElementById('inputText').focus();
 
-        // Handle the Generate button click
         document.getElementById('submitText').addEventListener('click', () => {
             const inputText = document.getElementById('inputText').value;
-            generateText(inputText, editor);
-            dialogElement.remove(); // Remove the dialog after submission
+            generateText(inputText, editor).then(generatedText => {
+                document.getElementById('inputText').value = generatedText;
+            });
         });
     });
 
     return view;
+}
+
+function positionDialog(dialogElement, buttonElement) {
+    const buttonRect = buttonElement.getBoundingClientRect();
+    dialogElement.style.top = `${buttonRect.bottom}px`;
+    dialogElement.style.left = `${buttonRect.left}px`;
 }

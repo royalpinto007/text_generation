@@ -9,7 +9,9 @@ use function Codewithkyrian\Transformers\Pipelines\pipeline;
 
 class TextGenerationController extends ControllerBase {
     public function generateText(Request $request) {
-        $text = $request->get('text');
+        // Decode JSON from the request body
+        $data = json_decode($request->getContent(), true);
+        $text = $data['text'] ?? null;  // Use null coalescing operator to handle absent key
         
         if (empty($text)) {
             return new JsonResponse(['error' => 'No text provided'], 400);
