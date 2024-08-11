@@ -1,6 +1,6 @@
 # This has 'change-this-to-info' in the filename instead of 'info' so this
 # template isn't discovered as a module.
-name: text_generation
+name: text_generation_service
 type: module
 description: "Your CKEditor 5 plugin"
 package: CKEditor 5
