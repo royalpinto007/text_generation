@@ -39,7 +39,7 @@ getDirectories('./js/ckeditor5_plugins').forEach((dir) => {
     },
     plugins: [
       new webpack.DllReferencePlugin({
-        manifest: require('./node_modules/ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
+        manifest: require('ckeditor5/build/ckeditor5-dll.manifest.json'), // eslint-disable-line global-require, import/no-unresolved
         scope: 'ckeditor5/src',
         name: 'CKEditor5.dll',
       }),
