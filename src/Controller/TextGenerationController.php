@@ -17,7 +17,7 @@ class TextGenerationController extends ControllerBase {
             return new JsonResponse(['error' => 'No text provided'], 400);
         }
 
-        $generator = pipeline('text2text-generation', 'Xenova/flan-t5-small');
+        $generator = pipeline('text-generation', 'Xenova/gpt2');
         $output = $generator($text);
 
         return new JsonResponse(['generated_text' => $output[0]['generated_text']]);

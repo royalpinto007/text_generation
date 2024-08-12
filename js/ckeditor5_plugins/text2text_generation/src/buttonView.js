@@ -7,11 +7,14 @@ export default function createButtonView(locale, editor) {
 
     const css = `
         .ck-button-generate-text {
-            background-color: #0074bd;
+            background-color: #0074bd; 
             color: white;
             border: none;
             padding: 5px 10px;
             border-radius: 4px;
+            margin-left: auto;  
+            margin-right: auto; 
+            display: block; 
         }
 
         .ck-text-generator-dialog {
@@ -29,7 +32,6 @@ export default function createButtonView(locale, editor) {
         .ck-input-text {
             width: 95%;
             padding: 8px;
-            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
@@ -41,6 +43,16 @@ export default function createButtonView(locale, editor) {
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
+        }
+
+        .ck-close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
         }
     `;
     const styleSheet = document.createElement('style');
@@ -59,8 +71,9 @@ export default function createButtonView(locale, editor) {
         const dialogElement = document.createElement('div');
         dialogElement.className = 'ck-text-generator-dialog';
         dialogElement.innerHTML = `
+            <button class="ck-close-button">✖</button>
             <div class="ck-dialog-body">
-                <textarea id="inputText" class="ck-input-text" rows="4" cols="35"></textarea>
+                <textarea id="inputText" class="ck-input-text" rows="4" cols="40"></textarea>
                 <button id="submitText" class="ck-submit-button">Generate</button>
             </div>
         `;
@@ -79,6 +92,10 @@ export default function createButtonView(locale, editor) {
                 document.getElementById('inputText').value = generatedText;
             });
         });
+
+        document.querySelector('.ck-close-button').addEventListener('click', () => {
+            dialogElement.remove();
+        });
     });
 
     return view;
@@ -86,6 +103,8 @@ export default function createButtonView(locale, editor) {
 
 function positionDialog(dialogElement, buttonElement) {
     const buttonRect = buttonElement.getBoundingClientRect();
+    const dialogWidth = dialogElement.offsetWidth;  
+    const viewportWidth = window.innerWidth;        
     dialogElement.style.top = `${buttonRect.bottom + 5}px`;
-    dialogElement.style.left = `${buttonRect.left}px`;
+    dialogElement.style.left = `${(viewportWidth / 2) - (dialogWidth / 2)}px`;
 }
