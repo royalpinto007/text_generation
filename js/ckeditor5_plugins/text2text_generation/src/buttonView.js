@@ -12,13 +12,10 @@ export default function createButtonView(locale, editor) {
             border: none;
             padding: 5px 10px;
             border-radius: 4px;
-            margin-left: auto;  
-            margin-right: auto; 
-            display: block; 
         }
 
         .ck-text-generator-dialog {
-            position: fixed;
+            position: absolute;
             background-color: white;
             border: 1px solid #ccc;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -26,13 +23,16 @@ export default function createButtonView(locale, editor) {
         }
 
         .ck-dialog-body {
-            padding: 20px;
+            padding-top: 20px;
+            padding-right: 20px;
+            padding-left: 20px;
+            padding-bottom: 10px;
         }
 
         .ck-input-text {
-            width: 95%;
-            padding: 8px;
-            border: 1px solid #ccc;
+            width: 92%;
+            padding: 10px;
+            border: 1px solid #000;
             border-radius: 4px;
         }
 
@@ -43,6 +43,7 @@ export default function createButtonView(locale, editor) {
             padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
+            margin-top: 2px;
         }
 
         .ck-close-button {
@@ -79,10 +80,13 @@ export default function createButtonView(locale, editor) {
         `;
 
         document.body.appendChild(dialogElement);
-        positionDialog(dialogElement, view.element);
+        enableDrag(dialogElement);
 
-        window.addEventListener('resize', () => positionDialog(dialogElement, view.element));
-        window.addEventListener('scroll', () => positionDialog(dialogElement, view.element));
+        // Calculate and set initial position with slight space below the icon
+        const buttonRect = view.element.getBoundingClientRect();
+        dialogElement.style.position = 'absolute';
+        dialogElement.style.top = `${buttonRect.bottom + 5}px`; // position slightly below the button with 5px gap
+        dialogElement.style.left = `${buttonRect.left}px`; // align with the button
 
         document.getElementById('inputText').focus();
 
@@ -101,10 +105,36 @@ export default function createButtonView(locale, editor) {
     return view;
 }
 
-function positionDialog(dialogElement, buttonElement) {
-    const buttonRect = buttonElement.getBoundingClientRect();
-    const dialogWidth = dialogElement.offsetWidth;  
-    const viewportWidth = window.innerWidth;        
-    dialogElement.style.top = `${buttonRect.bottom + 5}px`;
-    dialogElement.style.left = `${(viewportWidth / 2) - (dialogWidth / 2)}px`;
+function enableDrag(element) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.querySelector(element.className + " .ck-close-button")) {
+        document.querySelector(element.className + " .ck-close-button").onmousedown = dragMouseDown;
+    } else {
+        element.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        document.onmouseup = closeDragElement;
+        document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+        e = e || window.event;
+        e.preventDefault();
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        element.style.top = (element.offsetTop - pos2) + "px";
+        element.style.left = (element.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+    }
 }
